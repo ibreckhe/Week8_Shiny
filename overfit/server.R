@@ -19,7 +19,9 @@ overfit <- function(n_obs,n_covar,dir="both"){
 ##Communicates with UI
 shinyServer(function(input, output) {
   ##Expression "fit" reacts when inputs to function "overfit change"
-  fit <- reactive({overfit(input$n_obs,input$n_covar,input$sel_method)})
+  fit <- eventReactive(input$go, {
+    overfit(input$n_obs,input$n_covar,input$sel_method)
+  })
   ##Renders output
   output$print_fit <- renderPrint(fit())
 })

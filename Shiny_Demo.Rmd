@@ -3,6 +3,8 @@ title: "Shiny Demo"
 author: "Ian Breckheimer"
 date: "November 30, 2015"
 output: ioslides_presentation
+incremental: true
+runtime: shiny
 widescreen: true
 smaller: true
 ---
@@ -11,16 +13,18 @@ smaller: true
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Why put your analysis on the web?
+## Why make your analysis interactive? {.build}
 
 - Communicate an analysis with collaborators.
 - Teach statistical concepts.
 - Public outreach.
 
 ## Examples from the web
+- [Moving Habitat Model](https://movinghabitatmodel.shinyapps.io/BioticInteractions/)
 - [Genetic Drift Simulation](http://rosetta.ahmedmoustafa.io/drift/)
 - [ggplot2 Theme Builder](https://bchartoff.shinyapps.io/ggShinyApp/)
 - [A lot more](http://www.showmeshiny.com/)
+
 ## Installing Shiny
 Shiny is develping quickly. It is up on CRAN but the latest and greatest is on [GitHub](https://github.com).
 ```{r, eval=FALSE, echo=TRUE}
@@ -47,7 +51,7 @@ shinyUI(
 ```
 
 
-## Why is it set up this way?
+## Why is it set up this way? {.build}
 
 Reactive programming model:
 
@@ -57,7 +61,7 @@ Reactive programming model:
 
 Our app will be called "Overfitting" and we will use it to explore one of the biggest downsides of using automated model selection.
 
-## Overfitting 
+## Overfitting {.build}
 <div class="columns-2">
 
 Fitting a large number of parameters to a small amount of data results in a model that fits great to the data you used to build the model, but poorly on independent data.
@@ -87,8 +91,10 @@ colnames(covar) <- varnames
 ##Binds everything into a data frame.
 data <- data.frame(cbind(response,covar))
 ```
+...
 
 ## Continued
+...
 ```{r, eval=TRUE, echo=TRUE, results='hide'}
 ##Creates a formula for the saturated model.
 cov_terms <- paste(varnames,"*",sep="",collapse="")
@@ -145,7 +151,6 @@ shinyUI(
 
 ## Drop it into server.R
 
-server.R
 ```{r, eval=FALSE, echo=TRUE}
 library(shiny)
 ##Function we just created.
@@ -155,17 +160,16 @@ overfit <- function(n_obs,n_covar){
 ##Communicates with UI
 shinyServer(function(input, output) {
   ##Expression "fit" reacts when inputs to function "overfit change"
-  fit <- reactive({overfit(input$n_obs,input$n_covar,input$sel_method)})
+  fit <- eventReactive(input$go, {
+    overfit(input$n_obs,input$n_covar,input$sel_method)
+  })
   ##Renders output
   output$print_fit <- renderPrint(fit())
 })
 ```
 
-## On the UI side:
+## In ui.R:
 
-Add inputs for all arguments.
-
-ui.R
 ```{r, eval=FALSE, echo=TRUE}
 library(shiny)
 shinyUI(pageWithSidebar(
@@ -173,24 +177,24 @@ shinyUI(pageWithSidebar(
   sidebarPanel(
     numericInput("n_obs", "Number of Random Observations:", 
                 min=1,max=500,value=50),
-    sliderInput("n_covar", "Number of Random Covariates:", 
-                min=1,max=5,value=4),
     selectInput("sel_method", "Model Selection Direction", 
                 choices = c("backward", "both"),
-                selected="both")),
+                selected="both"),
+    sliderInput("n_covar", "Number of Random Covariates:", 
+                min=1,max=5,value=4),
+    actionButton("go", "Go"),
   mainPanel(
     h4("Step-wise selected best model:"),
     verbatimTextOutput("print_fit"))
 ))
 ```
 
-## Now we have an App!
+## Now we have an App!{.build}
 
 launch an App locally from the R prompt by typing:
 ```{r, eval=FALSE, echo=TRUE}
 library(shiny)
-setwd("./overfit")
-runApp()
+runApp("./overfit")
 ```
 
 or deploy to [shinyapps.io](https://ibreckhe.shinyapps.io/overfit)
@@ -213,3 +217,15 @@ Treatment | # Samples | # Covariates
     2     |    30     |    5     
     3     |    300    |    3     
     4     |    300    |    5   
+
+Run 10 replicate simulations with your assigned treatment.
+    
+## You can also embed the application.
+```{r tabsets, echo=FALSE}
+shinyAppDir(
+  appDir="./overfit",
+  options = list(
+    width = "100%", height = 400
+  )
+)
+```

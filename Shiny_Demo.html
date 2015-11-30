@@ -104,10 +104,9 @@
 </article></slide><slide class=''><hgroup><h2>Examples from the web</h2></hgroup><article  id="examples-from-the-web">
 
 <ul>
-<li><a href='http://glimmer.rstudio.com/wisconsindpi/distribution/' title=''>Exploring Properties of Distributions</a></li>
-<li><a href='http://spark.rstudio.com/uafsnap/akcan_climate/' title=''>SNAP Climate Projections</a></li>
-<li><a href='http://spark.rstudio.com/jkatz/SurveyMaps/' title=''>Joshua Katz&#39;s Dialect Survey Maps</a></li>
-<li><a href='https://movinghabitatmodel.shinyapps.io/BioticInteractions/' title=''>Melanie Harsh&#39;s Moving Habitat Model</a></li>
+<li><a href='http://rosetta.ahmedmoustafa.io/drift/' title=''>Genetic Drift Simulation</a></li>
+<li><a href='https://bchartoff.shinyapps.io/ggShinyApp/' title=''>ggplot2 Theme Builder</a></li>
+<li><a href='http://www.showmeshiny.com/' title=''>A lot more</a></li>
 </ul>
 
 </article></slide><slide class=''><hgroup><h2>Installing Shiny</h2></hgroup><article  id="installing-shiny">
@@ -173,7 +172,7 @@ colnames(covar) &lt;- varnames
 ##Binds everything into a data frame.
 data &lt;- data.frame(cbind(response,covar))</pre>
 
-</article></slide><slide class=''><hgroup><h2>Continued</h2></hgroup><article  id="continued">
+<p>&#8230; ## Continued &#8230;</p>
 
 <pre class = 'prettyprint lang-r'>##Creates a formula for the saturated model.
 cov_terms &lt;- paste(varnames,&quot;*&quot;,sep=&quot;&quot;,collapse=&quot;&quot;)
@@ -241,11 +240,7 @@ shinyServer(function(input, output) {
   output$print_fit &lt;- renderPrint(fit())
 })</pre>
 
-</article></slide><slide class=''><hgroup><h2>On the UI side:</h2></hgroup><article  id="on-the-ui-side">
-
-<p>Add inputs for all arguments.</p>
-
-<p>ui.R</p>
+</article></slide><slide class=''><hgroup><h2>In ui.R:</h2></hgroup><article  id="in-ui.r">
 
 <pre class = 'prettyprint lang-r'>library(shiny)
 shinyUI(pageWithSidebar(
@@ -271,7 +266,7 @@ shinyUI(pageWithSidebar(
 setwd(&quot;./overfit&quot;)
 runApp()</pre>
 
-<p>or deploy to shinyapps.io</p>
+<p>or deploy to <a href='https://ibreckhe.shinyapps.io/overfit' title=''>shinyapps.io</a></p>
 
 <pre class = 'prettyprint lang-r'>devtools::install_github(&#39;rstudio/shinyapps&#39;)
 library(shinyapps)
