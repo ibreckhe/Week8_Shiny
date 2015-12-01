@@ -2,7 +2,9 @@
 title: "Shiny Demo"
 author: "Ian Breckheimer"
 date: "November 30, 2015"
-output: ioslides_presentation
+output: 
+  ioslides_presentation: 
+    highlight: pygments
 incremental: true
 runtime: shiny
 widescreen: true
@@ -34,8 +36,8 @@ install_github("rstudio/shiny")
 library(shiny)
 ```
 
-## Structure of a Shiny App
-server.R
+## Structure of a Shiny App  {.build}
+- server.R
 ```{r, eval=FALSE, echo=TRUE}
 shinyServer(function(input, output) {
   ##Reacts to inputs and executes code 
@@ -43,7 +45,8 @@ shinyServer(function(input, output) {
   })
 })
 ```
-ui.R
+
+- ui.R
 ```{r, eval=FALSE, echo=TRUE}
 shinyUI(
   ##Defines inputs, renders outputs.
@@ -67,10 +70,11 @@ Our app will be called "Overfitting" and we will use it to explore one of the bi
 Fitting a large number of parameters to a small amount of data results in a model that fits great to the data you used to build the model, but poorly on independent data.
 
 _"... with four parameters I can fit an elephant, and with five I can make him wiggle his trunk."_
-
 --John von Neumann
 
+
 ![John](vonNeumann.gif)
+
 </div>
 
 ## A simple script:
@@ -129,7 +133,7 @@ overfit <- function(n_obs,n_covar,dir="both"){
 }
 ```
 
-## Filling out the structure:
+## Filling out the structure:  {.build}
 
 server.R
 ```{r, eval=FALSE, echo=TRUE}
